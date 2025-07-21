@@ -1,4 +1,4 @@
-package dev.studies.fridgeai.model;
+package dev.studies.fridgeai.model.enums;
 
 public enum FoodItemCategory {
     VEGETABLE,

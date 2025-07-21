@@ -1,5 +1,6 @@
 package dev.studies.fridgeai.model;
 
+import dev.studies.fridgeai.model.enums.FoodItemCategory;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ public class FoodItem {
     private String name;
     private FoodItemCategory category;
     private Integer quantity;
+    @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
     public FoodItem() {

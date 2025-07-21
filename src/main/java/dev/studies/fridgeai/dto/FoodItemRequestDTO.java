@@ -1,6 +1,6 @@
 package dev.studies.fridgeai.dto;
 
-import dev.studies.fridgeai.model.FoodItemCategory;
+import dev.studies.fridgeai.model.enums.FoodItemCategory;
 
 import java.time.LocalDate;
 
