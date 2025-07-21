@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/fooditems")
@@ -31,7 +32,7 @@ public class FoodItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FoodItemResponseDTO> readFoodItem(@PathVariable Long id) {
+    public ResponseEntity<Optional<FoodItemResponseDTO>> readFoodItem(@PathVariable Long id) {
         return ResponseEntity.ok(foodItemService.readFoodItem(id));
     }
 
@@ -42,13 +43,17 @@ public class FoodItemController {
 
     @PutMapping("/{id}")
     public ResponseEntity<FoodItemResponseDTO> updateFoodItem(@PathVariable Long id, @RequestBody FoodItemRequestDTO foodItemRequestDTO) {
-        FoodItemResponseDTO foodItemResponseDTO = foodItemService.updateFoodItem(id, foodItemRequestDTO);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(foodItemResponseDTO.id())
-                .toUri();
-        return ResponseEntity.created(location).body(foodItemResponseDTO);
+        return foodItemService.readFoodItem(id)
+                .map( ifItemExist -> {
+                    FoodItemResponseDTO updatedItem = foodItemService.updateFoodItem(id, foodItemRequestDTO);
+                    URI location = ServletUriComponentsBuilder
+                            .fromCurrentRequest()
+                            .path("/{id}")
+                            .buildAndExpand(updatedItem.id())
+                            .toUri();
+                    return ResponseEntity.created(location).body(updatedItem);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

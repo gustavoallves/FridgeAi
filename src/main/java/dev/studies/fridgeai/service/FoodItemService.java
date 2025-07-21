@@ -8,6 +8,7 @@ import dev.studies.fridgeai.repository.FoodItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FoodItemService {
@@ -25,10 +26,10 @@ public class FoodItemService {
         return foodItemMapper.toResponseDTO(foodSaved);
     }
 
-    public FoodItemResponseDTO readFoodItem(Long id) {
+    public Optional<FoodItemResponseDTO> readFoodItem(Long id) {
         FoodItem foodItem = foodItemRepository.findById(id)
                 .orElse(null);
-        return foodItemMapper.toResponseDTO(foodItem);
+        return Optional.ofNullable(foodItemMapper.toResponseDTO(foodItem));
     }
 
     public List<FoodItemResponseDTO> readAllFoodItem() {
@@ -37,11 +38,6 @@ public class FoodItemService {
     }
 
     public FoodItemResponseDTO updateFoodItem(Long id, FoodItemRequestDTO foodItemRequestDTO) {
-        FoodItem existById = foodItemRepository.findById(id)
-                .orElse(null);    //tratar com Exceptions
-        if (existById == null) {
-            return null;
-        }
         FoodItem foodItemToUpdate = foodItemMapper.toModel(foodItemRequestDTO);
         foodItemToUpdate.setId(id);
         FoodItem foodItemUpdated = foodItemRepository.save(foodItemToUpdate);
