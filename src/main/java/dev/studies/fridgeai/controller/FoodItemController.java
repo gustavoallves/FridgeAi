@@ -14,6 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/fooditems")
 public class FoodItemController {
+
     private final FoodItemService foodItemService;
 
     public FoodItemController(FoodItemService foodItemService) {
@@ -37,14 +38,14 @@ public class FoodItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FoodItemResponseDTO>> readAllFoodItem(){
+    public ResponseEntity<List<FoodItemResponseDTO>> readAllFoodItem() {
         return ResponseEntity.ok(foodItemService.readAllFoodItem());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<FoodItemResponseDTO> updateFoodItem(@PathVariable Long id, @RequestBody FoodItemRequestDTO foodItemRequestDTO) {
         return foodItemService.readFoodItem(id)
-                .map( ifItemExist -> {
+                .map(ifItemExist -> {
                     FoodItemResponseDTO updatedItem = foodItemService.updateFoodItem(id, foodItemRequestDTO);
                     URI location = ServletUriComponentsBuilder
                             .fromCurrentRequest()

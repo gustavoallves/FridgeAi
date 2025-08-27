@@ -27,9 +27,8 @@ public class FoodItemService {
     }
 
     public Optional<FoodItemResponseDTO> readFoodItem(Long id) {
-        FoodItem foodItem = foodItemRepository.findById(id)
-                .orElse(null);
-        return Optional.ofNullable(foodItemMapper.toResponseDTO(foodItem));
+        return foodItemRepository.findById(id)
+                .map(foodItemMapper::toResponseDTO);
     }
 
     public List<FoodItemResponseDTO> readAllFoodItem() {
@@ -48,5 +47,4 @@ public class FoodItemService {
         //tratar com Exceptions
         foodItemRepository.deleteById(id);
     }
-
 }
